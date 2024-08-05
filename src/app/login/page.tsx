@@ -17,7 +17,7 @@ export default function Home() {
           <p className="text-dark-700">Começe já com seus agendamentos.</p>
           <p className="mt-2 text-sm">
             <Link
-              href="#"
+              href="/register"
               className="text-sm text-primary-foreground/80 underline underline-offset-4 hover:text-primary-foreground"
             >
               Ainda não tem uma conta?
@@ -47,19 +47,19 @@ export default function Home() {
         </div>
 
         <div className="flex items-center space-x-2">
-          <Checkbox id="terms" />
+          <Checkbox id="terms" className="bg-accent" />
           <Label htmlFor="terms" className="text-sm">
-            I agree to the{' '}
+            Eu concordo com os{' '}
             <Link
               href="#"
               className="text-sm text-primary-foreground/80 underline underline-offset-4 hover:text-primary-foreground"
             >
-              Terms & Conditions
+              Termos & Condições
             </Link>
           </Label>
         </div>
-        <Button className="w-full" size={'lg'}>
-          Entrar
+        <Button className="w-full" size={'lg'} asChild>
+          <Link href="/">Entrar</Link>
         </Button>
         <div className="mt-4 flex items-center justify-center space-x-2">
           <Separator className="h-px w-14 bg-gray-300" />
