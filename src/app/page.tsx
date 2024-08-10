@@ -1,8 +1,9 @@
 import Header from '@/components/header'
 import StatusCardFilter from '@/components/status-card-filter'
+import CustomTable from '@/components/table/custom-table'
+import UserGreeting from './__components/user-greeting'
 
 import { CalendarCheck2, Hourglass, TriangleAlert } from 'lucide-react'
-import UserGreeting from './__components/user-greeting'
 
 export default function Home() {
   return (
@@ -15,6 +16,10 @@ export default function Home() {
         <StatusCardFilter type="pending" total={4} icon={Hourglass} />
         <StatusCardFilter type="cancelled" total={4} icon={TriangleAlert} />
       </div>
+
+      <section className="px-12 py-8">
+        <CustomTable />
+      </section>
     </div>
   )
 }
