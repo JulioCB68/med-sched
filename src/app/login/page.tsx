@@ -1,4 +1,8 @@
+'use client'
+
 import Link from 'next/link'
+
+import { signIn } from 'next-auth/react'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -8,7 +12,7 @@ import { Separator } from '@/components/ui/separator'
 
 import { ChromeIcon } from 'lucide-react'
 
-export default function Home() {
+export default function Login() {
   return (
     <section className="container my-auto flex min-h-screen max-w-[496px] items-center bg-background text-white">
       <form className="flex-1 space-y-6">
@@ -58,8 +62,8 @@ export default function Home() {
             </Link>
           </Label>
         </div>
-        <Button className="w-full" size={'lg'} asChild>
-          <Link href="/">Entrar</Link>
+        <Button className="w-full" size={'lg'}>
+          Entrar
         </Button>
         <div className="mt-4 flex items-center justify-center space-x-2">
           <Separator className="h-px w-14 bg-gray-300" />
@@ -71,6 +75,10 @@ export default function Home() {
             variant="secondary"
             size={'lg'}
             className="flex w-full items-center space-x-2"
+            onClick={(e) => {
+              e.preventDefault()
+              signIn('google')
+            }}
           >
             <ChromeIcon className="h-5 w-5" />
             <span>Google</span>

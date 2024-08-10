@@ -1,5 +1,9 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { useSession } from 'next-auth/react'
 
 import {
   DropdownMenu,
@@ -12,6 +16,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { LogOut } from 'lucide-react'
 
 export default function Header() {
+  const { data: session } = useSession()
+
+  function getInitialsName(fullName: string): string {
+    const nameParts = fullName.split(' ').filter(Boolean)
+    if (nameParts.length === 0) {
+      return ''
+    }
+    const firstInitial = nameParts[0][0].toUpperCase()
+    const secondInitial =
+      nameParts.length > 1 ? nameParts[1][0].toUpperCase() : ''
+
+    return firstInitial + secondInitial
+  }
+
   return (
     <header className="admin-header">
       <Link href="/" className="cursor-pointer">
@@ -27,8 +45,10 @@ export default function Header() {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarImage src="" />
-            <AvatarFallback className="text-black">JC</AvatarFallback>
+            <AvatarImage src={session?.user?.image ?? ''} />
+            <AvatarFallback className="text-black">
+              {getInitialsName(session?.user?.name ?? '')}
+            </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
