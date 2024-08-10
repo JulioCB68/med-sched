@@ -21,6 +21,11 @@ const config = {
       backgroundColor: {
         primary: '#24AE7C',
       },
+      backgroundImage: {
+        appointments: "url('/assets/appointments-bg.png')",
+        pending: "url('/assets/pending-bg.png')",
+        cancelled: "url('/assets/cancelled-bg.png')",
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

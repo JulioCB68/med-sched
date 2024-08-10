@@ -1,5 +1,5 @@
 import Header from '@/components/header'
-import StatusCard from '@/components/status-card'
+import StatusCardFilter from '@/components/status-card-filter'
 
 import { CalendarCheck2, Hourglass, TriangleAlert } from 'lucide-react'
 
@@ -13,9 +13,9 @@ export default function Home() {
       </section>
 
       <div className="grid grid-cols-3 gap-4 px-12 pt-8">
-        <StatusCard type="appointments" total={4} icon={CalendarCheck2} />
-        <StatusCard type="pending" total={4} icon={Hourglass} />
-        <StatusCard type="cancelled" total={4} icon={TriangleAlert} />
+        <StatusCardFilter type="appointments" total={4} icon={CalendarCheck2} />
+        <StatusCardFilter type="pending" total={4} icon={Hourglass} />
+        <StatusCardFilter type="cancelled" total={4} icon={TriangleAlert} />
       </div>
     </div>
   )
