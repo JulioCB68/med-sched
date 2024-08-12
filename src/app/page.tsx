@@ -1,4 +1,5 @@
 import Header from '@/components/header'
+import { Pagination } from '@/components/pagination'
 import StatusCardFilter from '@/components/status-card-filter'
 import CustomTable from '@/components/table/custom-table'
 import UserGreeting from './__components/user-greeting'
@@ -17,8 +18,9 @@ export default function Home() {
         <StatusCardFilter type="cancelled" total={4} icon={TriangleAlert} />
       </div>
 
-      <section className="px-12 py-8">
+      <section className="space-y-4 px-12 py-8">
         <CustomTable />
+        <Pagination pageIndex={0} totalCount={105} perPage={10} />
       </section>
     </div>
   )
