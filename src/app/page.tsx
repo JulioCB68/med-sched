@@ -2,6 +2,7 @@ import Header from '@/components/header'
 import { Pagination } from '@/components/pagination'
 import StatusCardFilter from '@/components/status-card-filter'
 import CustomTable from '@/components/table/custom-table'
+import { TableFilters } from '@/components/table/table-filters'
 import UserGreeting from './__components/user-greeting'
 
 import { CalendarCheck2, Hourglass, TriangleAlert } from 'lucide-react'
@@ -19,6 +20,7 @@ export default function Home() {
       </div>
 
       <section className="space-y-4 px-12 py-8">
+        <TableFilters />
         <CustomTable />
         <Pagination pageIndex={0} totalCount={105} perPage={10} />
       </section>
