@@ -3,7 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { useSession } from 'next-auth/react'
+import { LogOut } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 
 import {
   DropdownMenu,
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogOut } from 'lucide-react'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -52,7 +52,10 @@ export default function Header() {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem className="cursor-pointer space-x-2">
+          <DropdownMenuItem
+            className="cursor-pointer space-x-2"
+            onClick={() => signOut()}
+          >
             <LogOut className="size-4" /> <p>Sair</p>
           </DropdownMenuItem>
         </DropdownMenuContent>
