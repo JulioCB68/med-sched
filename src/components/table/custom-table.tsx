@@ -1,3 +1,4 @@
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import {
   Table,
   TableBody,
@@ -6,8 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ArrowRight, Search, X } from 'lucide-react'
+import { AppointmentDetails } from '../appointment-details'
 import { Button } from '../ui/button'
+
+import { ArrowRight, Search, X } from 'lucide-react'
 
 export default function CustomTable() {
   return (
@@ -35,10 +38,15 @@ export default function CustomTable() {
                 className="border-muted-foreground hover:bg-muted-foreground/30"
               >
                 <TableCell>
-                  <Button size="sm" variant="outline">
-                    <Search className="h-3 w-3" />
-                    <span className="sr-only">Detalhes da consulta</span>
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button size="sm" variant="outline">
+                        <span className="sr-only">Detalhes da consulta</span>
+                        <Search className="h-3 w-3" />
+                      </Button>
+                    </DialogTrigger>
+                    <AppointmentDetails />
+                  </Dialog>
                 </TableCell>
                 <TableCell className="font-mono text-xs font-medium">
                   821e78f7asdhdf128h
