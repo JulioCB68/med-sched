@@ -11,10 +11,10 @@ import { Button } from '../ui/button'
 
 export default function CustomTable() {
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border border-muted-foreground">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-muted-foreground hover:bg-transparent">
             <TableHead className="w-[64px] text-muted"></TableHead>
             <TableHead className="w-[140px] text-muted">
               Identificador
@@ -30,9 +30,12 @@ export default function CustomTable() {
         <TableBody>
           {Array.from({ length: 10 }).map((_, i) => {
             return (
-              <TableRow key={i}>
+              <TableRow
+                key={i}
+                className="border-muted-foreground hover:bg-muted-foreground/30"
+              >
                 <TableCell>
-                  <Button variant="outline" size="sm">
+                  <Button size="sm" variant="outline">
                     <Search className="h-3 w-3" />
                     <span className="sr-only">Detalhes da consulta</span>
                   </Button>
