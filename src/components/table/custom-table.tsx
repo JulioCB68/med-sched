@@ -22,7 +22,7 @@ export default function CustomTable() {
             <TableHead className="w-[140px] text-muted">
               Identificador
             </TableHead>
-            <TableHead className="w-[180px] text-muted">Realizado há</TableHead>
+            <TableHead className="w-[180px] text-muted">Realizado em</TableHead>
             <TableHead className="w-[140px] text-muted">Status</TableHead>
             <TableHead className="text-muted">Médico</TableHead>
             <TableHead className="text-muted">Paciente</TableHead>
@@ -52,7 +52,7 @@ export default function CustomTable() {
                   821e78f7asdhdf128h
                 </TableCell>
                 <TableCell className="text-muted-foreground">
-                  há 15 minutos
+                  31/01/2024
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
