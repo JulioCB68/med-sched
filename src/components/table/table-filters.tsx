@@ -24,7 +24,7 @@ export function TableFilters() {
           <SelectItem value="all">Todos status</SelectItem>
           <SelectItem value="pending">Pendente</SelectItem>
           <SelectItem value="canceled">Cancelado</SelectItem>
-          <SelectItem value="delivered">Entregue</SelectItem>
+          <SelectItem value="delivered">Concluído</SelectItem>
         </SelectContent>
       </Select>
       <Button variant="secondary" size="sm" type="submit">

@@ -1,7 +1,7 @@
 import Header from '@/components/header'
-import { Pagination } from '@/components/pagination'
 import StatusCardFilter from '@/components/status-card-filter'
 import CustomTable from '@/components/table/custom-table'
+import { Pagination } from '@/components/table/pagination'
 import { TableFilters } from '@/components/table/table-filters'
 import UserGreeting from './__components/user-greeting'
 
