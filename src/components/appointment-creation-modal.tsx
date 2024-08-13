@@ -1,8 +1,10 @@
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { DatePicker } from './date-picker'
 import { Button } from './ui/button'
@@ -46,7 +48,30 @@ export function AppointmentCreationModal() {
           <Label>Data</Label>
           <DatePicker />
         </div>
-        <Button className="w-full">Agendar</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full">Agendar</Button>
+          </DialogTrigger>
+          <DialogContent className="space-y-4 text-muted">
+            <DialogHeader className="space-y-4">
+              <DialogTitle>
+                Deseja adicionar essa consulta a sua agenda?
+              </DialogTitle>
+              <DialogDescription>
+                Por favor confirme seu Email.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-2">
+              <Input placeholder="Digite o email da sua conta Google" />
+              <div className="flex items-center gap-4 pt-2">
+                <Button variant={'destructive'} className="w-full">
+                  Cancelar
+                </Button>
+                <Button className="w-full">Confirmar</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </form>
     </DialogContent>
   )
