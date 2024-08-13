@@ -26,7 +26,7 @@ export function AppointmentDetails() {
             </TableCell>
           </TableRow>
           <TableRow className="hover:bg-transparent">
-            <TableCell>Cliente</TableCell>
+            <TableCell>Paciente</TableCell>
             <TableCell className="flex justify-end">
               Diego Schell Fernandes
             </TableCell>
@@ -42,8 +42,8 @@ export function AppointmentDetails() {
             </TableCell>
           </TableRow>
           <TableRow className="hover:bg-transparent">
-            <TableCell>Realizado há</TableCell>
-            <TableCell className="flex justify-end">há 3 minutos</TableCell>
+            <TableCell>Realizado em</TableCell>
+            <TableCell className="flex justify-end">31/01/2024</TableCell>
           </TableRow>
         </TableBody>
       </Table>

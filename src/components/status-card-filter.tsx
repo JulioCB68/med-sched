@@ -31,7 +31,7 @@ export default function StatusCardFilter({
   icon: Icon,
 }: IStatusCardFilterProps) {
   return (
-    <div className={`${STATUS_CLASSES[type]} status-card cursor-pointer`}>
+    <div className={`${STATUS_CLASSES[type]} status-card`}>
       <Card className="border-none bg-transparent">
         <CardHeader className="flex-row items-center space-x-2 space-y-0 pb-2">
           <Icon className={`h-4 w-4 ${STATUS_COLORS[type]}`} />
