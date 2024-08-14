@@ -1,7 +1,8 @@
 import { robotoMono } from '@/config/fonts'
 import { metaData } from '@/config/meta-data'
-import '../styles/globals.css'
+import ReactQueryProvider from '@/providers/react-query-provider'
 import NextAuthProvider from '@/providers/SessionProvider'
+import '../styles/globals.css'
 
 export const metadata = metaData
 
@@ -13,7 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={robotoMono.className}>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <NextAuthProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </NextAuthProvider>
       </body>
     </html>
   )
