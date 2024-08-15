@@ -1,3 +1,10 @@
+'use client'
+
+import { useQuery } from '@tanstack/react-query'
+
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import {
   Table,
@@ -7,12 +14,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { getAppointments, IAppointment } from '@/services/get-appointments'
 import { AppointmentDetails } from '../appointment-details'
 import { Button } from '../ui/button'
+import { AppointmentActions } from './appointment-actions'
+import { AppointmentStatus } from './appointment-status'
 
-import { ArrowRight, Search, X } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 
 export default function CustomTable() {
+  const { data: appointments } = useQuery<IAppointment[]>({
+    queryKey: ['all-appointments'],
+    queryFn: getAppointments,
+  })
+
   return (
     <div className="rounded-md border border-muted-foreground">
       <Table>
@@ -31,7 +46,7 @@ export default function CustomTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Array.from({ length: 10 }).map((_, i) => {
+          {appointments?.map((appointment, i) => {
             return (
               <TableRow
                 key={i}
@@ -48,34 +63,33 @@ export default function CustomTable() {
                     <AppointmentDetails />
                   </Dialog>
                 </TableCell>
-                <TableCell className="font-mono text-xs font-medium">
-                  821e78f7asdhdf128h
+                <TableCell className="whitespace-nowrap font-mono text-xs font-medium">
+                  {appointment.id}
                 </TableCell>
                 <TableCell className="text-muted-foreground">
-                  31/01/2024
+                  {format(appointment.Date, 'P', { locale: ptBR })}
                 </TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-slate-400" />
-                    <span className="font-medium text-muted-foreground">
-                      Pendente
-                    </span>
-                  </div>
+                  <AppointmentStatus status={appointment.status} />
                 </TableCell>
                 <TableCell className="font-medium">
-                  Andrew Russell Garfield
+                  {appointment.doctor}
                 </TableCell>
                 <TableCell className="font-medium">
-                  George Timothy Clooney
+                  {appointment.patient}
                 </TableCell>
                 <TableCell>
-                  <Button variant="outline" size="sm">
-                    <ArrowRight className="mr-2 h-3 w-3" />
-                    Aprovar
-                  </Button>
+                  <AppointmentActions status={appointment.status} />
                 </TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={
+                      appointment.status === 'completed' ||
+                      appointment.status === 'canceled'
+                    }
+                  >
                     <X className="mr-2 h-3 w-3" />
                     Cancelar
                   </Button>
