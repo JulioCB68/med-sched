@@ -1,5 +1,7 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
+
 import { useQuery } from '@tanstack/react-query'
 
 import { format } from 'date-fns'
@@ -23,9 +25,11 @@ import { AppointmentStatus } from './appointment-status'
 import { Search, X } from 'lucide-react'
 
 export default function CustomTable() {
+  const session = useSession()
+
   const { data: appointments } = useQuery<IAppointment[]>({
-    queryKey: ['all-appointments'],
-    queryFn: getAppointments,
+    queryKey: ['all-appointments-from-user'],
+    queryFn: () => getAppointments(session.data?.user?.email as string),
   })
 
   return (
