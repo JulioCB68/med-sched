@@ -3,13 +3,13 @@ import { NextResponse } from 'next/server'
 
 export async function GET(
   req: Request,
-  { params }: { params: { email: string } },
+  { params }: { params: { id: string } },
 ) {
-  const email = params.email
+  const id = params.id
 
   const user = await db.user.findUnique({
     where: {
-      email,
+      id,
     },
   })
 

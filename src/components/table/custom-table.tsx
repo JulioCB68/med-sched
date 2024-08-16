@@ -25,11 +25,11 @@ import { AppointmentStatus } from './appointment-status'
 import { Search, X } from 'lucide-react'
 
 export default function CustomTable() {
-  const session = useSession()
+  const { data: session } = useSession()
 
   const { data: appointments } = useQuery<IAppointment[]>({
     queryKey: ['all-appointments-from-user'],
-    queryFn: () => getAppointments(session.data?.user?.email as string),
+    queryFn: () => getAppointments(session?.user.id as string),
   })
 
   return (

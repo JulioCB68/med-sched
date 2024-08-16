@@ -11,8 +11,8 @@ export interface IAppointment {
   userId: string
 }
 
-export async function getAppointments(email: string): Promise<IAppointment[]> {
-  const response = await api.get(`/appointments/${email}`)
+export async function getAppointments(id: string): Promise<IAppointment[]> {
+  const response = await api.get(`/appointments/${id}`)
 
   const appointments: IAppointment[] = response.data
 
