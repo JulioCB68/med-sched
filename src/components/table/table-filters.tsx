@@ -125,7 +125,7 @@ export function TableFilters() {
                 <SelectItem value="all">Todos status</SelectItem>
                 <SelectItem value="pending">Pendente</SelectItem>
                 <SelectItem value="canceled">Cancelado</SelectItem>
-                <SelectItem value="delivered">Concluído</SelectItem>
+                <SelectItem value="completed">Concluído</SelectItem>
               </SelectContent>
             </Select>
           )

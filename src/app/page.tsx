@@ -22,7 +22,7 @@ export default function Home() {
       <section className="space-y-4 px-12 py-8">
         <TableFilters />
         <CustomTable />
-        <Pagination pageIndex={0} totalCount={105} perPage={10} />
+        <Pagination />
       </section>
     </div>
   )

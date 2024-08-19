@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useSearchParams } from 'next/navigation'
 
 import { useQuery } from '@tanstack/react-query'
 
@@ -25,11 +26,29 @@ import { AppointmentStatus } from './appointment-status'
 import { Search, X } from 'lucide-react'
 
 export default function CustomTable() {
+  const searchParams = useSearchParams()
   const { data: session } = useSession()
 
-  const { data: appointments } = useQuery<IAppointment[]>({
+  const appointmentId = searchParams.get('appointmentId')
+  const patientName = searchParams.get('patientName')
+  const status = searchParams.get('status')
+
+  const { data } = useQuery<IAppointment[]>({
     queryKey: ['all-appointments-from-user'],
     queryFn: () => getAppointments(session?.user.id as string),
+  })
+
+  const filteredData = data?.filter((item) => {
+    const matchesAppointmentId = appointmentId
+      ? item.id === appointmentId
+      : true
+    const matchesPatientName = patientName
+      ? item.patient.includes(patientName)
+      : true
+    const matchesStatus =
+      status && status !== 'all' ? item.status === status : true
+
+    return matchesAppointmentId && matchesPatientName && matchesStatus
   })
 
   return (
@@ -50,7 +69,7 @@ export default function CustomTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {appointments?.map((appointment, i) => {
+          {filteredData?.map((appointment, i) => {
             return (
               <TableRow
                 key={i}
