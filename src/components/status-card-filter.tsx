@@ -1,42 +1,57 @@
+'use client'
+
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { LucideProps } from 'lucide-react'
+import { IAppointment, getAppointments } from '@/services/get-appointments'
 
 interface IStatusCardFilterProps {
-  type: 'appointments' | 'pending' | 'cancelled'
-  total: number
-  icon: React.FC<LucideProps>
+  type: 'completed' | 'pending' | 'canceled'
+  icon: React.ReactNode
 }
 
 const STATUS_CLASSES = {
-  appointments: 'bg-appointments',
+  completed: 'bg-appointments',
   pending: 'bg-pending',
-  cancelled: 'bg-cancelled',
+  canceled: 'bg-cancelled',
 }
 
 const STATUS_LABEL = {
-  appointments: 'Confirmadas',
+  completed: 'Concluídas',
   pending: 'Pendentes',
-  cancelled: 'Canceladas',
+  canceled: 'Canceladas',
 }
 
 const STATUS_COLORS = {
-  appointments: 'text-amber-500',
-  pending: 'text-blue-500',
-  cancelled: 'text-red-500',
+  completed: 'text-emerald-500',
+  pending: 'text-slate-400',
+  canceled: 'text-rose-500',
 }
 
 export default function StatusCardFilter({
   type,
-  total,
-  icon: Icon,
+  icon,
 }: IStatusCardFilterProps) {
+  const { data: session } = useSession()
+
+  const { data: appointments } = useQuery<IAppointment[]>({
+    queryKey: ['all-appointments-from-user'],
+    queryFn: () => getAppointments(session?.user.id as string),
+  })
+
+  function totalAppointments(status: string): number | undefined {
+    const appointment = appointments?.filter((item) => item.status === status)
+    return appointment?.length
+  }
+
   return (
     <div className={`${STATUS_CLASSES[type]} status-card`}>
       <Card className="border-none bg-transparent">
         <CardHeader className="flex-row items-center space-x-2 space-y-0 pb-2">
-          <Icon className={`h-4 w-4 ${STATUS_COLORS[type]}`} />
+          <div className={`h-4 w-4 ${STATUS_COLORS[type]}`}>{icon}</div>
           <CardTitle className="text-base font-semibold text-muted">
-            {total}
+            {totalAppointments(type)}
           </CardTitle>
         </CardHeader>
         <CardContent className="w-5 space-y-1 text-muted">
