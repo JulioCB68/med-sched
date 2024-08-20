@@ -23,7 +23,7 @@ import { Button } from '../ui/button'
 import { AppointmentActions } from './appointment-actions'
 import { AppointmentStatus } from './appointment-status'
 
-import { Search, X } from 'lucide-react'
+import { Search } from 'lucide-react'
 
 export default function CustomTable() {
   const searchParams = useSearchParams()
@@ -102,20 +102,17 @@ export default function CustomTable() {
                   {appointment.patient}
                 </TableCell>
                 <TableCell>
-                  <AppointmentActions status={appointment.status} />
+                  <AppointmentActions
+                    id={appointment.id}
+                    status={appointment.status}
+                  />
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    disabled={
-                      appointment.status === 'completed' ||
-                      appointment.status === 'canceled'
-                    }
-                  >
-                    <X className="mr-2 h-3 w-3" />
-                    Cancelar
-                  </Button>
+                  <AppointmentActions
+                    id={appointment.id}
+                    status={appointment.status}
+                    isCancelButton
+                  />
                 </TableCell>
               </TableRow>
             )

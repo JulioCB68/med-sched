@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/sonner'
 import { robotoMono } from '@/config/fonts'
 import { metaData } from '@/config/meta-data'
 import ReactQueryProvider from '@/providers/react-query-provider'
@@ -17,6 +18,7 @@ export default function RootLayout({
         <NextAuthProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </NextAuthProvider>
+        <Toaster richColors />
       </body>
     </html>
   )
