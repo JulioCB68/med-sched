@@ -71,6 +71,9 @@ model Appointment {
   doctor  String
   patient String
   status  String
+  reason  String
+  rg      String
+  cpf     String
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
