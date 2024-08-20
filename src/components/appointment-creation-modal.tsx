@@ -1,17 +1,55 @@
+'use client'
+
+import { useMutation } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+
+import { Controller, useForm } from 'react-hook-form'
+
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
+import { createNewAppointment } from '@/services/create-appointment'
+import { toast } from 'sonner'
+import { z } from 'zod'
 import { DatePicker } from './date-picker'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 
+const createNewAppointmentSchema = z.object({
+  doctorName: z.string(),
+  patientName: z.string(),
+  rg: z.string(),
+  cpf: z.string(),
+  reason: z.string(),
+  date: z.date(),
+})
+
+type CreateNewAppointmentSchema = z.infer<typeof createNewAppointmentSchema>
+
 export function AppointmentCreationModal() {
+  const { data: session } = useSession()
+
+  const { mutateAsync: crateAppointment } = useMutation({
+    mutationFn: createNewAppointment,
+    onSuccess() {
+      toast.success('Consulta agendada com sucesso.')
+    },
+    onError() {
+      toast.error('Erro ao agendar consulta.')
+    },
+  })
+
+  const { register, control, handleSubmit } =
+    useForm<CreateNewAppointmentSchema>()
+
+  function handleCreateNewAppointment(data: CreateNewAppointmentSchema) {
+    crateAppointment({ userId: session?.user.id as string, ...data })
+  }
+
   return (
     <DialogContent>
       <DialogHeader className="text-muted">
@@ -21,57 +59,44 @@ export function AppointmentCreationModal() {
         </DialogDescription>
       </DialogHeader>
 
-      <form action="" className="space-y-4 text-muted">
+      <form
+        onSubmit={handleSubmit(handleCreateNewAppointment)}
+        className="space-y-4 text-muted"
+      >
         <div className="space-y-2">
           <Label>Nome do paciente</Label>
-          <Input />
+          <Input {...register('patientName')} />
         </div>
         <div className="space-y-2">
           <Label>Nome do Médico</Label>
-          <Input />
+          <Input {...register('doctorName')} />
         </div>
         <div className="flex items-center justify-between gap-4">
           <div className="w-full space-y-2">
             <Label>RG</Label>
-            <Input />
+            <Input {...register('rg')} />
           </div>
           <div className="w-full space-y-2">
             <Label>CPF</Label>
-            <Input />
+            <Input {...register('cpf')} />
           </div>
         </div>
         <div className="space-y-2">
           <Label>Motivo</Label>
-          <Input />
+          <Input {...register('reason')} />
         </div>
         <div className="flex flex-col space-y-2 pb-2">
           <Label>Data</Label>
-          <DatePicker />
+          <Controller
+            name="date"
+            control={control}
+            render={({ field }) => <DatePicker {...field} />}
+          />
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full">Agendar</Button>
-          </DialogTrigger>
-          <DialogContent className="space-y-4 text-muted">
-            <DialogHeader className="space-y-4">
-              <DialogTitle>
-                Deseja adicionar essa consulta a sua agenda?
-              </DialogTitle>
-              <DialogDescription>
-                Por favor confirme seu Email.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-2">
-              <Input placeholder="Digite o email da sua conta Google" />
-              <div className="flex items-center gap-4 pt-2">
-                <Button variant={'destructive'} className="w-full">
-                  Cancelar
-                </Button>
-                <Button className="w-full">Confirmar</Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+
+        <Button type="submit" className="w-full">
+          Agendar
+        </Button>
       </form>
     </DialogContent>
   )
