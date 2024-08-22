@@ -14,9 +14,7 @@ import { cn } from '@/lib/utils'
 
 import { Calendar as CalendarIcon } from 'lucide-react'
 
-interface DatePickerProps extends ControllerRenderProps {
-  disabled?: boolean
-}
+interface DatePickerProps extends ControllerRenderProps {}
 
 export function DatePicker({ onChange, value, disabled }: DatePickerProps) {
   return (
@@ -24,6 +22,7 @@ export function DatePicker({ onChange, value, disabled }: DatePickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant={'outline'}
+          disabled={disabled}
           className={cn(
             'w-full justify-start text-left font-normal hover:bg-transparent hover:text-muted',
             !value && 'text-muted-foreground',
@@ -42,7 +41,6 @@ export function DatePicker({ onChange, value, disabled }: DatePickerProps) {
           mode="single"
           selected={value}
           onSelect={onChange}
-          disabled={disabled}
           initialFocus
         />
       </PopoverContent>

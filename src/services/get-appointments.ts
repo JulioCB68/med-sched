@@ -1,7 +1,7 @@
 import { api } from '@/lib/axios'
 
 export interface IAppointment {
-  Date: string
+  Date: Date
   createdAt: string
   doctor: string
   id: string
@@ -9,6 +9,9 @@ export interface IAppointment {
   status: 'pending' | 'confirmed' | 'completed' | 'canceled'
   updatedAt: string
   userId: string
+  reason: string
+  cpf: string
+  rg: string
 }
 
 export async function getAppointments(id: string): Promise<IAppointment[]> {
