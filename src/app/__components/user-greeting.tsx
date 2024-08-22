@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import { useSession } from 'next-auth/react'
 
 import { Button } from '@/components/ui/button'
@@ -14,6 +16,8 @@ function getFirstName(fullName: string): string {
 }
 
 export default function UserGreeting() {
+  const [isOpenonAppointmentCreationModal, setIsOpenAppointmentCreationModal] =
+    useState<boolean>(false)
   const { data: session } = useSession()
 
   return (
@@ -24,14 +28,21 @@ export default function UserGreeting() {
         </h1>
         <p>Comece o dia gerenciando novas consultas.</p>
       </div>
-      <Dialog>
+      <Dialog
+        open={isOpenonAppointmentCreationModal}
+        onOpenChange={setIsOpenAppointmentCreationModal}
+      >
         <DialogTrigger asChild>
           <Button>
             Nova consulta
             <CalendarPlus className="ml-3 size-5" />
           </Button>
         </DialogTrigger>
-        <AppointmentCreationModal />
+        <AppointmentCreationModal
+          onCloseAppointmentCreationModal={() =>
+            setIsOpenAppointmentCreationModal(false)
+          }
+        />
       </Dialog>
     </section>
   )

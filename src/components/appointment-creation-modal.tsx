@@ -1,6 +1,6 @@
 'use client'
 
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { Controller, useForm } from 'react-hook-form'
@@ -12,6 +12,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { createNewAppointment } from '@/services/create-appointment'
+import { CPFmask, RGmask } from '@/utils/Input-mask'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { DatePicker } from './date-picker'
@@ -19,35 +21,57 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 
-const createNewAppointmentSchema = z.object({
+export const appointmentSchema = z.object({
   doctorName: z.string(),
   patientName: z.string(),
-  rg: z.string(),
   cpf: z.string(),
+  rg: z.string(),
   reason: z.string(),
   date: z.date(),
 })
 
-type CreateNewAppointmentSchema = z.infer<typeof createNewAppointmentSchema>
+export type AppointmentSchema = z.infer<typeof appointmentSchema>
 
-export function AppointmentCreationModal() {
+interface IAppointmentCreationModalProps {
+  onCloseAppointmentCreationModal: () => void
+}
+
+export function AppointmentCreationModal({
+  onCloseAppointmentCreationModal,
+}: IAppointmentCreationModalProps) {
   const { data: session } = useSession()
+
+  const queryClient = useQueryClient()
 
   const { mutateAsync: crateAppointment } = useMutation({
     mutationFn: createNewAppointment,
-    onSuccess() {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all-appointments-from-user'],
+      })
       toast.success('Consulta agendada com sucesso.')
+      onCloseAppointmentCreationModal()
     },
     onError() {
       toast.error('Erro ao agendar consulta.')
     },
   })
 
-  const { register, control, handleSubmit } =
-    useForm<CreateNewAppointmentSchema>()
+  const { register, control, handleSubmit, setValue } =
+    useForm<AppointmentSchema>({
+      resolver: zodResolver(appointmentSchema),
+    })
 
-  function handleCreateNewAppointment(data: CreateNewAppointmentSchema) {
-    crateAppointment({ userId: session?.user.id as string, ...data })
+  function handleCreateNewAppointment(data: AppointmentSchema) {
+    const newData = {
+      ...data,
+      cpf: data.cpf.replace(/\D/g, ''),
+      rg: data.rg.replace(/\D/g, ''),
+    }
+    crateAppointment({
+      userId: session?.user.id as string,
+      ...newData,
+    })
   }
 
   return (
@@ -74,11 +98,17 @@ export function AppointmentCreationModal() {
         <div className="flex items-center justify-between gap-4">
           <div className="w-full space-y-2">
             <Label>RG</Label>
-            <Input {...register('rg')} />
+            <Input
+              {...register('rg')}
+              onChange={(e) => setValue('rg', RGmask(e))}
+            />
           </div>
           <div className="w-full space-y-2">
             <Label>CPF</Label>
-            <Input {...register('cpf')} />
+            <Input
+              {...register('cpf')}
+              onChange={(e) => setValue('cpf', CPFmask(e))}
+            />
           </div>
         </div>
         <div className="space-y-2">

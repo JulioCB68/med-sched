@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
@@ -18,14 +19,18 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getAppointments, IAppointment } from '@/services/get-appointments'
-import { AppointmentDetails } from '../appointment-details'
 import { Button } from '../ui/button'
 import { AppointmentActions } from './appointment-actions'
+import { AppointmentDetails } from './appointment-details'
 import { AppointmentStatus } from './appointment-status'
 
 import { Search } from 'lucide-react'
 
 export default function CustomTable() {
+  const [
+    isOpenonCloseAppointmentDetailsModal,
+    setIsOpenonCloseAppointmentDetailsModal,
+  ] = useState<boolean>(false)
   const searchParams = useSearchParams()
   const { data: session } = useSession()
 
@@ -60,7 +65,7 @@ export default function CustomTable() {
             <TableHead className="w-[140px] text-muted">
               Identificador
             </TableHead>
-            <TableHead className="w-[180px] text-muted">Realizado em</TableHead>
+            <TableHead className="w-[180px] text-muted">Agendado</TableHead>
             <TableHead className="w-[140px] text-muted">Status</TableHead>
             <TableHead className="text-muted">Médico</TableHead>
             <TableHead className="text-muted">Paciente</TableHead>
@@ -76,14 +81,22 @@ export default function CustomTable() {
                 className="border-muted-foreground hover:bg-muted-foreground/30"
               >
                 <TableCell>
-                  <Dialog>
+                  <Dialog
+                    open={isOpenonCloseAppointmentDetailsModal}
+                    onOpenChange={setIsOpenonCloseAppointmentDetailsModal}
+                  >
                     <DialogTrigger asChild>
                       <Button size="sm" variant="outline">
                         <span className="sr-only">Detalhes da consulta</span>
                         <Search className="h-3 w-3" />
                       </Button>
                     </DialogTrigger>
-                    <AppointmentDetails />
+                    <AppointmentDetails
+                      appointment={appointment}
+                      onCloseAppointmentDetailsModal={() =>
+                        setIsOpenonCloseAppointmentDetailsModal(false)
+                      }
+                    />
                   </Dialog>
                 </TableCell>
                 <TableCell className="whitespace-nowrap font-mono text-xs font-medium">
