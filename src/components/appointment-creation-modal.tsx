@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { createNewAppointment } from '@/services/create-appointment'
-import { CPFmask, RGmask } from '@/utils/Input-mask'
+import { CPFmask, RGmask } from '@/utils/input-mask'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { z } from 'zod'

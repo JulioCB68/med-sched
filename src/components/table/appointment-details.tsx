@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
 
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import {
   DialogContent,
@@ -20,18 +20,34 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
-import { createNewAppointment } from '@/services/create-appointment'
 import { deleteAppointment } from '@/services/delete-appointment'
+import { editAppointment } from '@/services/edit-appointment'
 import { IAppointment } from '@/services/get-appointments'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  CPFmask,
+  CPFmaskForPlaceholder,
+  RGmask,
+  RGmaskForPlaceholder,
+} from '@/utils/input-mask'
+import { geDateInfo } from '@/utils/transform-dates'
 import { toast } from 'sonner'
-import { AppointmentSchema } from '../appointment-creation-modal'
 import { DatePicker } from '../date-picker'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { AppointmentStatus } from './appointment-status'
 
+export const appointmentDetailsSchema = z.object({
+  status: z.enum(['pending', 'confirmed', 'completed', 'canceled']),
+  doctorName: z.string(),
+  patientName: z.string(),
+  cpf: z.string(),
+  rg: z.string(),
+  reason: z.string(),
+  date: z.date(),
+})
+
+export type AppointmentDetailsSchema = z.infer<typeof appointmentDetailsSchema>
 interface IAppointmentDetailsProps {
   appointment: IAppointment
   onCloseAppointmentDetailsModal: () => void
@@ -45,11 +61,14 @@ export function AppointmentDetails({
 
   const queryClient = useQueryClient()
 
-  const { mutateAsync: editAppointment } = useMutation({
-    mutationFn: createNewAppointment,
+  const { mutateAsync: editAppointmentFn } = useMutation({
+    mutationFn: editAppointment,
     onSuccess() {
-      toast.success('Consulta editada com sucesso.')
       onCloseAppointmentDetailsModal()
+      toast.success('Consulta editada com sucesso.')
+      queryClient.invalidateQueries({
+        queryKey: ['all-appointments-from-user'],
+      })
     },
     onError() {
       toast.error('Erro ao editar consulta.')
@@ -70,22 +89,21 @@ export function AppointmentDetails({
     },
   })
 
-  const { register, control, handleSubmit } = useForm<AppointmentSchema>()
+  const { register, control, handleSubmit, setValue } =
+    useForm<AppointmentDetailsSchema>({
+      defaultValues: {
+        doctorName: appointment.doctor,
+        patientName: appointment.patient,
+        date: appointment.Date,
+        cpf: appointment.cpf,
+        rg: appointment.rg,
+        reason: appointment.reason,
+        status: appointment.status,
+      },
+    })
 
-  function handleEditAppointment(data: AppointmentSchema) {
-    editAppointment(data)
-  }
-
-  function geDateInfo(date: Date): string {
-    const currentDate = new Date()
-    const today = format(currentDate, 'P', { locale: ptBR })
-    const appointmentDate = format(date, 'P', { locale: ptBR })
-
-    if (appointmentDate < today) {
-      return 'Realizado em'
-    } else {
-      return 'Agendado para'
-    }
+  function handleEditAppointment(data: AppointmentDetailsSchema) {
+    editAppointmentFn({ id: appointment.id, ...data })
   }
 
   return (
@@ -157,10 +175,11 @@ export function AppointmentDetails({
               <TableCell>RG</TableCell>
               <TableCell className="flex justify-end">
                 <Input
-                  placeholder={appointment.rg}
+                  placeholder={RGmaskForPlaceholder(appointment.rg)}
                   className="placeholder:text-white disabled:text-right"
                   {...register('rg')}
                   disabled={!isEditForm}
+                  onChange={(e) => setValue('rg', RGmask(e))}
                 />
               </TableCell>
             </TableRow>
@@ -168,10 +187,11 @@ export function AppointmentDetails({
               <TableCell>CPF</TableCell>
               <TableCell className="flex justify-end">
                 <Input
-                  placeholder={appointment.cpf}
+                  placeholder={CPFmaskForPlaceholder(appointment.cpf)}
                   className="placeholder:text-white disabled:text-right"
                   {...register('cpf')}
                   disabled={!isEditForm}
+                  onChange={(e) => setValue('cpf', CPFmask(e))}
                 />
               </TableCell>
             </TableRow>
@@ -207,14 +227,22 @@ export function AppointmentDetails({
             </TableRow>
           </TableBody>
         </Table>
+        {!isEditForm && (
+          <Button
+            type="button"
+            className="w-full"
+            onClick={() => setIsEditForm(true)}
+            variant={'secondary'}
+          >
+            Editar
+          </Button>
+        )}
+        {isEditForm && (
+          <Button type="submit" className="w-full">
+            Salvar
+          </Button>
+        )}
       </form>
-      {isEditForm === false ? (
-        <Button onClick={() => setIsEditForm(true)} variant={'secondary'}>
-          Editar
-        </Button>
-      ) : (
-        <Button>Salvar</Button>
-      )}
       <Button
         variant={'destructive'}
         onClick={() => deleteAppointmentFn(appointment.id)}
