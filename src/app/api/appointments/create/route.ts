@@ -1,4 +1,7 @@
+import { getGoogleOAuthToken } from '@/lib/google'
 import { db } from '@/lib/prisma'
+import { addHours, format } from 'date-fns'
+import { google } from 'googleapis'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
@@ -25,6 +28,30 @@ export async function POST(req: Request) {
       cpf,
       reason,
       userId,
+    },
+  })
+
+  const calendar = google.calendar({
+    version: 'v3',
+    auth: await getGoogleOAuthToken(userId),
+  })
+
+  const startDate = new Date(date)
+  const endDate = addHours(startDate, 1)
+
+  await calendar.events.insert({
+    calendarId: 'primary',
+    conferenceDataVersion: 1,
+    requestBody: {
+      summary: `Appointment: ${patientName}`,
+      description: reason,
+      start: {
+        dateTime: format(startDate, "yyyy-MM-dd'T'HH:mm:ssXXX"),
+      },
+      end: {
+        dateTime: format(endDate, "yyyy-MM-dd'T'HH:mm:ssXXX"),
+      },
+      attendees: [{ email: user.email, displayName: patientName }],
     },
   })
 
