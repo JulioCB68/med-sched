@@ -20,6 +20,7 @@ export function Pagination() {
   const { data: appointments } = useQuery<IAppointment[]>({
     queryKey: ['all-appointments-from-user'],
     queryFn: () => getAppointments(session?.user.id as string),
+    enabled: !!session,
   })
 
   const searchParams = useSearchParams()

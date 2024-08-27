@@ -38,6 +38,7 @@ export default function StatusCardFilter({
   const { data: appointments } = useQuery<IAppointment[]>({
     queryKey: ['all-appointments-from-user'],
     queryFn: () => getAppointments(session?.user.id as string),
+    enabled: !!session,
   })
 
   function totalAppointments(status: string): number | undefined {

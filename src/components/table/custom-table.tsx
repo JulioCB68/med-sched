@@ -1,6 +1,5 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
@@ -25,14 +24,17 @@ import { AppointmentDetails } from './appointment-details'
 import { AppointmentStatus } from './appointment-status'
 
 import { Search } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 
 export default function CustomTable() {
   const [
     isOpenonCloseAppointmentDetailsModal,
     setIsOpenonCloseAppointmentDetailsModal,
   ] = useState<boolean>(false)
-  const searchParams = useSearchParams()
+
   const { data: session } = useSession()
+
+  const searchParams = useSearchParams()
 
   const appointmentId = searchParams.get('appointmentId')
   const patientName = searchParams.get('patientName')
@@ -41,6 +43,7 @@ export default function CustomTable() {
   const { data } = useQuery<IAppointment[]>({
     queryKey: ['all-appointments-from-user'],
     queryFn: () => getAppointments(session?.user.id as string),
+    enabled: !!session,
   })
 
   const filteredData = data?.filter((item) => {
