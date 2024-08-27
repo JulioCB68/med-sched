@@ -32,6 +32,7 @@ import {
 import { geDateInfo } from '@/utils/transform-dates'
 import { toast } from 'sonner'
 import { DatePicker } from '../date-picker'
+import { Loading } from '../loading-state'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
@@ -89,18 +90,23 @@ export function AppointmentDetails({
     },
   })
 
-  const { register, control, handleSubmit, setValue } =
-    useForm<AppointmentDetailsSchema>({
-      defaultValues: {
-        doctorName: appointment.doctor,
-        patientName: appointment.patient,
-        date: appointment.Date,
-        cpf: appointment.cpf,
-        rg: appointment.rg,
-        reason: appointment.reason,
-        status: appointment.status,
-      },
-    })
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting },
+  } = useForm<AppointmentDetailsSchema>({
+    defaultValues: {
+      doctorName: appointment.doctor,
+      patientName: appointment.patient,
+      date: appointment.Date,
+      cpf: appointment.cpf,
+      rg: appointment.rg,
+      reason: appointment.reason,
+      status: appointment.status,
+    },
+  })
 
   function handleEditAppointment(data: AppointmentDetailsSchema) {
     editAppointmentFn({ id: appointment.id, ...data })
@@ -212,13 +218,15 @@ export function AppointmentDetails({
                 <Controller
                   name="date"
                   control={control}
-                  render={({ field: { name, onChange, onBlur, ref } }) => (
+                  render={({
+                    field: { name, onChange, onBlur, ref, value },
+                  }) => (
                     <DatePicker
                       name={name}
                       onBlur={onBlur}
                       ref={ref}
                       onChange={onChange}
-                      value={appointment.Date}
+                      value={value}
                       disabled={!isEditForm}
                     />
                   )}
@@ -242,6 +250,7 @@ export function AppointmentDetails({
             Salvar
           </Button>
         )}
+        {isEditForm && isSubmitting && <Loading text="salvar" />}
       </form>
       <Button
         variant={'destructive'}

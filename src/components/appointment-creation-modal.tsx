@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { DatePicker } from './date-picker'
+import { Loading } from './loading-state'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
@@ -51,16 +52,23 @@ export function AppointmentCreationModal({
       })
       toast.success('Consulta agendada com sucesso.')
       onCloseAppointmentCreationModal()
+      reset()
     },
     onError() {
       toast.error('Erro ao agendar consulta.')
     },
   })
 
-  const { register, control, handleSubmit, setValue } =
-    useForm<AppointmentSchema>({
-      resolver: zodResolver(appointmentSchema),
-    })
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<AppointmentSchema>({
+    resolver: zodResolver(appointmentSchema),
+  })
 
   function handleCreateNewAppointment(data: AppointmentSchema) {
     const newData = {
@@ -124,9 +132,12 @@ export function AppointmentCreationModal({
           />
         </div>
 
-        <Button type="submit" className="w-full">
-          Agendar
-        </Button>
+        {!isSubmitting && (
+          <Button type="submit" className="w-full">
+            Agendar
+          </Button>
+        )}
+        {isSubmitting && <Loading text="agendar" />}
       </form>
     </DialogContent>
   )
