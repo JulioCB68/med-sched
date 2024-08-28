@@ -23,14 +23,14 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { deleteAppointment } from '@/services/delete-appointment'
 import { editAppointment } from '@/services/edit-appointment'
 import { IAppointment } from '@/services/get-appointments'
+import { geDateInfo } from '@/utils/transform-dates'
+import { toast } from 'sonner'
 import {
   CPFmask,
   CPFmaskForPlaceholder,
   RGmask,
   RGmaskForPlaceholder,
-} from '@/utils/input-mask'
-import { geDateInfo } from '@/utils/transform-dates'
-import { toast } from 'sonner'
+} from '../../utils/input-mask'
 import { DatePicker } from '../date-picker'
 import { Loading } from '../loading-state'
 import { Button } from '../ui/button'

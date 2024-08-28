@@ -12,10 +12,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { createNewAppointment } from '@/services/create-appointment'
-import { CPFmask, RGmask } from '@/utils/input-mask'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { CPFmask, RGmask } from '../utils/input-mask'
 import { DatePicker } from './date-picker'
 import { Loading } from './loading-state'
 import { Button } from './ui/button'
