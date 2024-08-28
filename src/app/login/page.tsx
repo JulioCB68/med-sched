@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import { signIn } from "next-auth/react";
+import { signIn } from 'next-auth/react'
 
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 
-import { ChromeIcon } from "lucide-react";
+import { ChromeIcon } from 'lucide-react'
 
 export default function Login() {
   return (
@@ -25,11 +25,11 @@ export default function Login() {
         </div>
         <div className="mt-4 flex justify-center space-x-4">
           <Button
-            size={"lg"}
+            size={'lg'}
             className="flex w-full items-center space-x-2"
             onClick={(e) => {
-              e.preventDefault();
-              signIn("google");
+              e.preventDefault()
+              signIn('google')
             }}
           >
             <ChromeIcon className="h-5 w-5 text-black/70" />
@@ -38,5 +38,5 @@ export default function Login() {
         </div>
       </form>
     </section>
-  );
+  )
 }

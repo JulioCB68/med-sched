@@ -1,16 +1,16 @@
-import { Toaster } from "@/components/ui/sonner";
-import { robotoMono } from "@/config/fonts";
-import { metaData } from "@/config/meta-data";
-import ReactQueryProvider from "@/providers/react-query-provider";
-import NextAuthProvider from "@/providers/SessionProvider";
-import "../styles/globals.css";
+import { Toaster } from '@/components/ui/sonner'
+import { robotoMono } from '@/config/fonts'
+import { metaData } from '@/config/meta-data'
+import ReactQueryProvider from '@/providers/react-query-provider'
+import NextAuthProvider from '@/providers/SessionProvider'
+import '../styles/globals.css'
 
-export const metadata = metaData;
+export const metadata = metaData
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
@@ -21,5 +21,5 @@ export default function RootLayout({
         <Toaster richColors />
       </body>
     </html>
-  );
+  )
 }

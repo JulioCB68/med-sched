@@ -1,21 +1,21 @@
-import { getGoogleOAuthToken } from "@/lib/google";
-import { db } from "@/lib/prisma";
-import { addHours, format } from "date-fns";
-import { google } from "googleapis";
-import { NextResponse } from "next/server";
+import { getGoogleOAuthToken } from '@/lib/google'
+import { db } from '@/lib/prisma'
+import { addHours, format } from 'date-fns'
+import { google } from 'googleapis'
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   const { userId, doctorName, patientName, rg, cpf, reason, date } =
-    await req.json();
+    await req.json()
 
   const user = await db.user.findUnique({
     where: {
       id: userId,
     },
-  });
+  })
 
   if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 400 });
+    return NextResponse.json({ error: 'User not found' }, { status: 400 })
   }
 
   const createNewAppointment = await db.appointment.create({
@@ -23,24 +23,24 @@ export async function POST(req: Request) {
       doctor: doctorName,
       patient: patientName,
       Date: date,
-      status: "pending",
+      status: 'pending',
       rg,
       cpf,
       reason,
       userId,
     },
-  });
+  })
 
   const calendar = google.calendar({
-    version: "v3",
+    version: 'v3',
     auth: await getGoogleOAuthToken(userId),
-  });
+  })
 
-  const startDate = new Date(date);
-  const endDate = addHours(startDate, 1);
+  const startDate = new Date(date)
+  const endDate = addHours(startDate, 1)
 
   await calendar.events.insert({
-    calendarId: "primary",
+    calendarId: 'primary',
     conferenceDataVersion: 1,
     requestBody: {
       summary: `Appointment: ${patientName}`,
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       },
       attendees: [{ email: user.email, displayName: patientName }],
     },
-  });
+  })
 
-  return NextResponse.json(createNewAppointment, { status: 201 });
+  return NextResponse.json(createNewAppointment, { status: 201 })
 }

@@ -1,13 +1,13 @@
-import { api } from "@/lib/axios";
+import { api } from '@/lib/axios'
 
 interface CreateAppointmentParams {
-  userId: string;
-  doctorName: string;
-  patientName: string;
-  rg: string;
-  cpf: string;
-  reason: string;
-  date: Date;
+  userId: string
+  doctorName: string
+  patientName: string
+  rg: string
+  cpf: string
+  reason: string
+  date: Date
 }
 
 export async function createNewAppointment({
@@ -19,7 +19,7 @@ export async function createNewAppointment({
   reason,
   date,
 }: CreateAppointmentParams) {
-  await api.post("/appointments/create", {
+  await api.post('/appointments/create', {
     userId,
     doctorName,
     patientName,
@@ -27,5 +27,5 @@ export async function createNewAppointment({
     cpf,
     reason,
     date,
-  });
+  })
 }

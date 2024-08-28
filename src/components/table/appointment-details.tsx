@@ -1,94 +1,94 @@
-"use client";
+'use client'
 
-import { useState } from "react";
+import { useState } from 'react'
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import {
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { deleteAppointment } from "@/services/delete-appointment";
-import { editAppointment } from "@/services/edit-appointment";
-import { IAppointment } from "@/services/get-appointments";
-import { geDateInfo } from "@/utils/transform-dates";
-import { toast } from "sonner";
+} from '@/components/ui/select'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { deleteAppointment } from '@/services/delete-appointment'
+import { editAppointment } from '@/services/edit-appointment'
+import { IAppointment } from '@/services/get-appointments'
+import { geDateInfo } from '@/utils/transform-dates'
+import { toast } from 'sonner'
 import {
   CPFmask,
   CPFmaskForPlaceholder,
   RGmask,
   RGmaskForPlaceholder,
-} from "../../utils/input-mask";
-import { DatePicker } from "../date-picker";
-import { Loading } from "../loading-state";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { AppointmentStatus } from "./appointment-status";
+} from '../../utils/input-mask'
+import { DatePicker } from '../date-picker'
+import { Loading } from '../loading-state'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Textarea } from '../ui/textarea'
+import { AppointmentStatus } from './appointment-status'
 
 export const appointmentDetailsSchema = z.object({
-  status: z.enum(["pending", "confirmed", "completed", "canceled"]),
+  status: z.enum(['pending', 'confirmed', 'completed', 'canceled']),
   doctorName: z.string(),
   patientName: z.string(),
   cpf: z.string(),
   rg: z.string(),
   reason: z.string(),
   date: z.date(),
-});
+})
 
-export type AppointmentDetailsSchema = z.infer<typeof appointmentDetailsSchema>;
+export type AppointmentDetailsSchema = z.infer<typeof appointmentDetailsSchema>
 interface IAppointmentDetailsProps {
-  appointment: IAppointment;
-  onCloseAppointmentDetailsModal: () => void;
+  appointment: IAppointment
+  onCloseAppointmentDetailsModal: () => void
 }
 
 export function AppointmentDetails({
   appointment,
   onCloseAppointmentDetailsModal,
 }: IAppointmentDetailsProps) {
-  const [isEditForm, setIsEditForm] = useState<boolean>(false);
+  const [isEditForm, setIsEditForm] = useState<boolean>(false)
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const { mutateAsync: editAppointmentFn } = useMutation({
     mutationFn: editAppointment,
     onSuccess() {
-      onCloseAppointmentDetailsModal();
-      toast.success("Consulta editada com sucesso.");
+      onCloseAppointmentDetailsModal()
+      toast.success('Consulta editada com sucesso.')
       queryClient.invalidateQueries({
-        queryKey: ["all-appointments-from-user"],
-      });
+        queryKey: ['all-appointments-from-user'],
+      })
     },
     onError() {
-      toast.error("Erro ao editar consulta.");
+      toast.error('Erro ao editar consulta.')
     },
-  });
+  })
 
   const { mutateAsync: deleteAppointmentFn } = useMutation({
     mutationFn: deleteAppointment,
     onSuccess() {
-      onCloseAppointmentDetailsModal();
-      toast.success("Consulta deletada com sucesso.");
+      onCloseAppointmentDetailsModal()
+      toast.success('Consulta deletada com sucesso.')
       queryClient.invalidateQueries({
-        queryKey: ["all-appointments-from-user"],
-      });
+        queryKey: ['all-appointments-from-user'],
+      })
     },
     onError() {
-      toast.error("Erro ao deletar consulta.");
+      toast.error('Erro ao deletar consulta.')
     },
-  });
+  })
 
   const {
     register,
@@ -106,10 +106,10 @@ export function AppointmentDetails({
       reason: appointment.reason,
       status: appointment.status,
     },
-  });
+  })
 
   function handleEditAppointment(data: AppointmentDetailsSchema) {
-    editAppointmentFn({ id: appointment.id, ...data });
+    editAppointmentFn({ id: appointment.id, ...data })
   }
 
   return (
@@ -161,7 +161,7 @@ export function AppointmentDetails({
                 <Input
                   placeholder={appointment.doctor}
                   className="placeholder:text-white disabled:disabled:text-right"
-                  {...register("doctorName")}
+                  {...register('doctorName')}
                   disabled={!isEditForm}
                 />
               </TableCell>
@@ -172,7 +172,7 @@ export function AppointmentDetails({
                 <Input
                   placeholder={appointment.patient}
                   className="placeholder:text-white disabled:text-right"
-                  {...register("patientName")}
+                  {...register('patientName')}
                   disabled={!isEditForm}
                 />
               </TableCell>
@@ -183,9 +183,9 @@ export function AppointmentDetails({
                 <Input
                   placeholder={RGmaskForPlaceholder(appointment.rg)}
                   className="placeholder:text-white disabled:text-right"
-                  {...register("rg")}
+                  {...register('rg')}
                   disabled={!isEditForm}
-                  onChange={(e) => setValue("rg", RGmask(e))}
+                  onChange={(e) => setValue('rg', RGmask(e))}
                 />
               </TableCell>
             </TableRow>
@@ -195,9 +195,9 @@ export function AppointmentDetails({
                 <Input
                   placeholder={CPFmaskForPlaceholder(appointment.cpf)}
                   className="placeholder:text-white disabled:text-right"
-                  {...register("cpf")}
+                  {...register('cpf')}
                   disabled={!isEditForm}
-                  onChange={(e) => setValue("cpf", CPFmask(e))}
+                  onChange={(e) => setValue('cpf', CPFmask(e))}
                 />
               </TableCell>
             </TableRow>
@@ -207,7 +207,7 @@ export function AppointmentDetails({
                 <Textarea
                   placeholder={appointment.reason}
                   className="placeholder:text-white disabled:border-none disabled:text-right"
-                  {...register("reason")}
+                  {...register('reason')}
                   disabled={!isEditForm}
                 />
               </TableCell>
@@ -240,7 +240,7 @@ export function AppointmentDetails({
             type="button"
             className="w-full"
             onClick={() => setIsEditForm(true)}
-            variant={"secondary"}
+            variant={'secondary'}
           >
             Editar
           </Button>
@@ -253,11 +253,11 @@ export function AppointmentDetails({
         {isEditForm && isSubmitting && <Loading text="salvar" />}
       </form>
       <Button
-        variant={"destructive"}
+        variant={'destructive'}
         onClick={() => deleteAppointmentFn(appointment.id)}
       >
         Excluir
       </Button>
     </DialogContent>
-  );
+  )
 }

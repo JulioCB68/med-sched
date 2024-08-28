@@ -1,14 +1,14 @@
-import { db } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { db } from '@/lib/prisma'
+import { NextResponse } from 'next/server'
 
 export async function DELETE(
   req: Request,
   { params }: { params: { id: string } },
 ) {
-  const { id } = params;
+  const { id } = params
 
   if (!id) {
-    return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 })
   }
 
   // const user = await db.user.findFirstOrThrow({
@@ -64,7 +64,7 @@ export async function DELETE(
     where: {
       id,
     },
-  });
+  })
 
-  return NextResponse.json(deleteAppointment, { status: 200 });
+  return NextResponse.json(deleteAppointment, { status: 200 })
 }

@@ -1,49 +1,49 @@
-"use client";
+'use client'
 
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { IAppointment, getAppointments } from "@/services/get-appointments";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { IAppointment, getAppointments } from '@/services/get-appointments'
 
 interface IStatusCardFilterProps {
-  type: "completed" | "pending" | "canceled";
-  icon: React.ReactNode;
+  type: 'completed' | 'pending' | 'canceled'
+  icon: React.ReactNode
 }
 
 const STATUS_CLASSES = {
-  completed: "bg-appointments",
-  pending: "bg-pending",
-  canceled: "bg-cancelled",
-};
+  completed: 'bg-appointments',
+  pending: 'bg-pending',
+  canceled: 'bg-cancelled',
+}
 
 const STATUS_LABEL = {
-  completed: "Concluídas",
-  pending: "Pendentes",
-  canceled: "Canceladas",
-};
+  completed: 'Concluídas',
+  pending: 'Pendentes',
+  canceled: 'Canceladas',
+}
 
 const STATUS_COLORS = {
-  completed: "text-emerald-500",
-  pending: "text-slate-400",
-  canceled: "text-rose-500",
-};
+  completed: 'text-emerald-500',
+  pending: 'text-slate-400',
+  canceled: 'text-rose-500',
+}
 
 export default function StatusCardFilter({
   type,
   icon,
 }: IStatusCardFilterProps) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
 
   const { data: appointments } = useQuery<IAppointment[]>({
-    queryKey: ["all-appointments-from-user"],
+    queryKey: ['all-appointments-from-user'],
     queryFn: () => getAppointments(session?.user.id as string),
     enabled: !!session,
-  });
+  })
 
   function totalAppointments(status: string): number | undefined {
-    const appointment = appointments?.filter((item) => item.status === status);
-    return appointment?.length;
+    const appointment = appointments?.filter((item) => item.status === status)
+    return appointment?.length
   }
 
   return (
@@ -60,5 +60,5 @@ export default function StatusCardFilter({
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

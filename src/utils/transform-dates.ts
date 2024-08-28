@@ -1,14 +1,14 @@
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 export function geDateInfo(date: Date): string {
-  const currentDate = new Date();
-  const today = format(currentDate, "P", { locale: ptBR });
-  const appointmentDate = format(date, "P", { locale: ptBR });
+  const currentDate = new Date()
+  const today = format(currentDate, 'P', { locale: ptBR })
+  const appointmentDate = format(date, 'P', { locale: ptBR })
 
   if (appointmentDate < today) {
-    return "Realizado em";
+    return 'Realizado em'
   } else {
-    return "Agendado para";
+    return 'Agendado para'
   }
 }

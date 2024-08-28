@@ -1,19 +1,19 @@
-import { api } from "@/lib/axios";
+import { api } from '@/lib/axios'
 
 export async function confirmeAppointment(id: string) {
-  await api.patch("/appointments/update-status/confirmed", {
+  await api.patch('/appointments/update-status/confirmed', {
     id,
-  });
+  })
 }
 
 export async function completeAppointment(id: string) {
-  await api.patch("/appointments/update-status/completed", {
+  await api.patch('/appointments/update-status/completed', {
     id,
-  });
+  })
 }
 
 export async function cancelAppointment(id: string) {
-  await api.patch("/appointments/update-status/canceled", {
+  await api.patch('/appointments/update-status/canceled', {
     id,
-  });
+  })
 }

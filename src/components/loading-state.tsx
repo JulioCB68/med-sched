@@ -1,8 +1,8 @@
-import { LoaderCircle } from "lucide-react";
-import { Button } from "./ui/button";
+import { LoaderCircle } from 'lucide-react'
+import { Button } from './ui/button'
 
 interface ILoadingProps {
-  text: string;
+  text: string
 }
 
 export function Loading({ text }: ILoadingProps) {
@@ -11,5 +11,5 @@ export function Loading({ text }: ILoadingProps) {
       <LoaderCircle className="animate-spin" />
       <p className="text-sm capitalize">{text}</p>
     </Button>
-  );
+  )
 }
