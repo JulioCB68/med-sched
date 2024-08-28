@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query";
 
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -16,48 +16,48 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { getAppointments, IAppointment } from '@/services/get-appointments'
-import { Button } from '../ui/button'
-import { AppointmentActions } from './appointment-actions'
-import { AppointmentDetails } from './appointment-details'
-import { AppointmentStatus } from './appointment-status'
+} from "@/components/ui/table";
+import { getAppointments, IAppointment } from "@/services/get-appointments";
+import { Button } from "../ui/button";
+import { AppointmentActions } from "./appointment-actions";
+import { AppointmentDetails } from "./appointment-details";
+import { AppointmentStatus } from "./appointment-status";
 
-import { Search } from 'lucide-react'
-import { useSession } from 'next-auth/react'
+import { Search } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export default function CustomTable() {
   const [
     isOpenonCloseAppointmentDetailsModal,
     setIsOpenonCloseAppointmentDetailsModal,
-  ] = useState<boolean>(false)
+  ] = useState<boolean>(false);
 
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
-  const appointmentId = searchParams.get('appointmentId')
-  const patientName = searchParams.get('patientName')
-  const status = searchParams.get('status')
+  const appointmentId = searchParams.get("appointmentId");
+  const patientName = searchParams.get("patientName");
+  const status = searchParams.get("status");
 
   const { data } = useQuery<IAppointment[]>({
-    queryKey: ['all-appointments-from-user'],
+    queryKey: ["all-appointments-from-user"],
     queryFn: () => getAppointments(session?.user.id as string),
     enabled: !!session,
-  })
+  });
 
   const filteredData = data?.filter((item) => {
     const matchesAppointmentId = appointmentId
       ? item.id === appointmentId
-      : true
+      : true;
     const matchesPatientName = patientName
       ? item.patient.includes(patientName)
-      : true
+      : true;
     const matchesStatus =
-      status && status !== 'all' ? item.status === status : true
+      status && status !== "all" ? item.status === status : true;
 
-    return matchesAppointmentId && matchesPatientName && matchesStatus
-  })
+    return matchesAppointmentId && matchesPatientName && matchesStatus;
+  });
 
   return (
     <div className="rounded-md border border-muted-foreground">
@@ -106,7 +106,7 @@ export default function CustomTable() {
                   {appointment.id}
                 </TableCell>
                 <TableCell className="text-muted-foreground">
-                  {format(appointment.Date, 'P', { locale: ptBR })}
+                  {format(appointment.Date, "P", { locale: ptBR })}
                 </TableCell>
                 <TableCell>
                   <AppointmentStatus status={appointment.status} />
@@ -131,10 +131,10 @@ export default function CustomTable() {
                   />
                 </TableCell>
               </TableRow>
-            )
+            );
           })}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

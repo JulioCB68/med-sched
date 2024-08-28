@@ -1,11 +1,11 @@
-import Header from '@/components/header'
-import StatusCardFilter from '@/components/status-card-filter'
-import CustomTable from '@/components/table/custom-table'
-import { Pagination } from '@/components/table/pagination'
-import { TableFilters } from '@/components/table/table-filters'
-import UserGreeting from './__components/user-greeting'
+import Header from "@/components/header";
+import StatusCardFilter from "@/components/status-card-filter";
+import CustomTable from "@/components/table/custom-table";
+import { Pagination } from "@/components/table/pagination";
+import { TableFilters } from "@/components/table/table-filters";
+import UserGreeting from "./__components/user-greeting";
 
-import { CalendarCheck2, Hourglass, TriangleAlert } from 'lucide-react'
+import { CalendarCheck2, Hourglass, TriangleAlert } from "lucide-react";
 
 export default async function Home() {
   return (
@@ -34,5 +34,5 @@ export default async function Home() {
         <Pagination />
       </section>
     </div>
-  )
+  );
 }

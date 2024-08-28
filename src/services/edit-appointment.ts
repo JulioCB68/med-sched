@@ -1,14 +1,14 @@
-import { api } from '@/lib/axios'
+import { api } from "@/lib/axios";
 
 interface EditAppointmentParams {
-  id: string
-  status: string
-  doctorName: string
-  patientName: string
-  rg: string
-  cpf: string
-  reason: string
-  date: Date
+  id: string;
+  status: string;
+  doctorName: string;
+  patientName: string;
+  rg: string;
+  cpf: string;
+  reason: string;
+  date: Date;
 }
 
 export async function editAppointment({
@@ -30,5 +30,5 @@ export async function editAppointment({
     cpf,
     reason,
     date,
-  })
+  });
 }

@@ -66,14 +66,13 @@
   body {
     @apply bg-background text-foreground;
   }
-
 }
 
 @layer utilities {
   .admin-header {
-    @apply sticky z-20 flex items-center justify-between bg-[#0D0F10] py-5 shadow-lg px-12;
+    @apply sticky z-20 flex items-center justify-between bg-[#0D0F10] px-12 py-5 shadow-lg;
   }
-  
+
   .status-card {
     @apply flex flex-1 flex-col gap-6 rounded-2xl bg-cover p-6 shadow-lg;
   }

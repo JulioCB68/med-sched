@@ -1,19 +1,19 @@
-import type { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const sessionCookie = request.cookies.get('next-auth.session-token')
+  const sessionCookie = request.cookies.get("next-auth.session-token");
 
-  if (sessionCookie && request.nextUrl.pathname === '/') {
-    return NextResponse.rewrite(new URL('/', request.url))
+  if (sessionCookie && request.nextUrl.pathname === "/") {
+    return NextResponse.rewrite(new URL("/", request.url));
   }
 
-  if (!sessionCookie && request.nextUrl.pathname === '/') {
-    return NextResponse.rewrite(new URL('/login', request.url))
+  if (!sessionCookie && request.nextUrl.pathname === "/") {
+    return NextResponse.rewrite(new URL("/login", request.url));
   }
 
-  if (sessionCookie && request.nextUrl.pathname === '/login') {
-    return NextResponse.rewrite(new URL('/', request.url))
+  if (sessionCookie && request.nextUrl.pathname === "/login") {
+    return NextResponse.rewrite(new URL("/", request.url));
   }
 }
 
@@ -26,6 +26,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
-}
+};

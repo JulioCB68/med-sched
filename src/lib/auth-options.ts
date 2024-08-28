@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth'
-import { Adapter } from 'next-auth/adapters'
-import GoogleProvider from 'next-auth/providers/google'
+import NextAuth from "next-auth";
+import { Adapter } from "next-auth/adapters";
+import GoogleProvider from "next-auth/providers/google";
 
-import { db } from '@/lib/prisma'
-import { PrismaAdapter } from '@auth/prisma-adapter'
+import { db } from "@/lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
 export const authOptions = NextAuth({
   adapter: PrismaAdapter(db) as Adapter,
@@ -14,7 +14,7 @@ export const authOptions = NextAuth({
       authorization: {
         params: {
           scope:
-            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar',
+            "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar",
         },
       },
     }),
@@ -22,20 +22,20 @@ export const authOptions = NextAuth({
   callbacks: {
     async session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id
+        session.user.id = user.id;
       }
-      return session
+      return session;
     },
 
     async signIn({ account }) {
       if (
-        !account?.scope?.includes('https://www.googleapis.com/auth/calendar')
+        !account?.scope?.includes("https://www.googleapis.com/auth/calendar")
       ) {
-        return '/register/connect-calendar?error=permissions'
+        return "/register/connect-calendar?error=permissions";
       }
 
-      return true
+      return true;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-})
+});
