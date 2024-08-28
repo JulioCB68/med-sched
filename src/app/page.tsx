@@ -6,6 +6,7 @@ import { TableFilters } from '@/components/table/table-filters'
 import UserGreeting from './__components/user-greeting'
 
 import { CalendarCheck2, Hourglass, TriangleAlert } from 'lucide-react'
+import { Suspense } from 'react'
 
 export default async function Home() {
   return (
@@ -29,9 +30,11 @@ export default async function Home() {
       </div>
 
       <section className="space-y-4 px-12 py-8">
-        <TableFilters />
-        <CustomTable />
-        <Pagination />
+        <Suspense fallback={<div>Loading...</div>}>
+          <TableFilters />
+          <CustomTable />
+          <Pagination />
+        </Suspense>
       </section>
     </div>
   )
