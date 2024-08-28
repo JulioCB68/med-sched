@@ -30,7 +30,7 @@ import {
   CPFmaskForPlaceholder,
   RGmask,
   RGmaskForPlaceholder,
-} from '../../utils/input-mask'
+} from '../../utils/inputMask'
 import { DatePicker } from '../date-picker'
 import { Loading } from '../loading-state'
 import { Button } from '../ui/button'
